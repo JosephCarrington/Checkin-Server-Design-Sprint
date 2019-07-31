@@ -1,12 +1,14 @@
 const express = require("express");
 const ip = require("ip");
 const bodyParser = require("body-parser");
+const cors = require("cors");
 
 const app = express();
 const port = 4000;
 
 let guests = [];
 
+app.use(cors());
 app.use(bodyParser.json());
 
 app.post((req, res, next) => {
