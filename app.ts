@@ -9,7 +9,7 @@ let guests = [];
 
 app.use(bodyParser.json());
 
-app.use((req, res, next) => {
+app.post((req, res, next) => {
   const {
     body: { coolSecret }
   } = req;
@@ -49,6 +49,26 @@ app.post("/checkin", (req, res) => {
   } else {
     res.status(404).send("No guest with that rfid");
   }
+});
+
+app.get("/admin", (req, res) => {
+  const html = `<table style="width: 100%">
+      <tr>
+        <th>RFID</th>
+        <th>Message</th>
+        <th>Checked In</th>
+      </tr>
+      ${guests.map(
+        guest => `<tr>
+          <td>${guest.rfid}</td>
+          <td>${guest.message}</td>
+          <td style="background: ${guest.checkedIn ? "green" : "red"}">
+            ${guest.checkedIn ? `yep` : `nope`}
+          </td>
+        </tr>`
+      )}
+    </table>`;
+  res.send(html);
 });
 
 app.listen(port, () =>
